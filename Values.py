@@ -31,19 +31,23 @@ Value = np.array([[4, 4, 5, 4, 5],
                   [2, 1, 2, 2, 1]])
 
 
-def calculateCost(completedTasks, print=False):
+def calculateCost(completedTasks, printValues=False):
     ValueReshaped = np.reshape(Value, [5,20])
     CostReshaped = np.reshape(Cost, [1,20])
     ret = []
+    costForSeed = np.sum(np.multiply(completedTasks, CostReshaped))
     for i in range(len(ValueReshaped)):
         #calculate Satisfaction for a given seed
         satisfactionForSeed = np.sum(np.multiply(completedTasks, ValueReshaped[i]))
-        costForSeed = np.sum(np.multiply(completedTasks, CostReshaped))
-
-
-        if print:
-            print("Satisfaction for seed = ", satisfactionForSeed)
-            print("Cost for seed = ", costForSeed)
-
         ret.append([costForSeed, satisfactionForSeed])
-    return ret
+    
+    satisfactionSum=0
+    for i in range(len(ret)):
+        satisfactionSum+=ret[i][1]
+
+    if printValues:
+        print("Satisfaction for seed = ", satisfactionSum)
+        print("Cost for seed = ", ret[0][0])
+    
+    retVal = [costForSeed, satisfactionSum]
+    return retVal
