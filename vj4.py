@@ -26,21 +26,24 @@ if not useCostLimit:
     costLimit = Fitness[0]
 else:
     print("Cost Limit fixed and set to: ", costLimit)
-while tk>0:
+    
+while tk > 0:
+    k += 1
+    print("tk=", tk, "in iteration:", k)
     for m in range(Mk):
-        
-        randPos=np.random.randint(20)
+
+        randPos = np.random.randint(20)
         newSol = list(sol)
-        if newSol[randPos] == 0: 
+        if newSol[randPos] == 0:
             newSol[randPos] = 1
         else:
             newSol[randPos] = 0
-        
+
         newSolutionFitness = calculateCost(newSol)
         delta = Fitness[1] - newSolutionFitness[1]
         #cost prohibitive?
 
-        if newSolutionFitness[0]>costLimit:
+        if newSolutionFitness[0] > costLimit:
             continue
         if delta < 0:
             #print(newSolutionFitness[1],">",Fitness[1])
@@ -50,12 +53,16 @@ while tk>0:
         else:
             probability = math.exp(delta/tk)
             #print(probability)
-            
-            if np.random.uniform(0,1,1) < (1-probability):
+
+            if np.random.uniform(0, 1, 1) < (1-probability):
                 sol = list(newSol)
                 Fitness = newSolutionFitness
-            
-        tk-=0.9
+
+        tk -= 0.9
+
+    if tk <= 0:
+        break
+
 
 print("\n\nBest solution found:")
 print(sol)
